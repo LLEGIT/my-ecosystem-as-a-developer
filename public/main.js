@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const nodes = [
-    {id: 'Me', group: 'You', size: 24, icon: 'public/icons/brain.svg'},
+    {id: 'Me', group: 'You', size: 24, icon: 'public/icons/avatar.png'},
     // OS & Environment
     {id: 'macOS', group: 'OS', icon: 'public/icons/app-window-mac.svg'},
     {id: 'Terminal (macOS)', group: 'OS', icon: 'public/icons/square-code.svg'},
@@ -68,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const svg = d3.select('#network').attr('viewBox', [0,0,width,height]);
 
   const defs = svg.append('defs');
+  // Clip path for circular avatar image (uses objectBoundingBox so it fits any image box)
+  defs.append('clipPath').attr('id', 'clip-avatar').attr('clipPathUnits', 'objectBoundingBox')
+    .append('circle').attr('cx', 0.5).attr('cy', 0.5).attr('r', 0.5);
 
   // Create a container group that will be transformed by zoom. This preserves per-node translate transforms.
   const container = svg.append('g').attr('class','graph-container');
@@ -89,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgRadius = iconSize/2 + 4;
     g.append('circle').attr('r', bgRadius).attr('fill', colorByGroup[d.group]||'#94a3b8').attr('stroke','#fff').attr('stroke-width',1.5);
     if(d.icon){
-      g.append('image').attr('href', d.icon).attr('width', iconSize).attr('height', iconSize).attr('x', -iconSize/2).attr('y', -iconSize/2).attr('preserveAspectRatio','xMidYMid slice');
+      const img = g.append('image').attr('href', d.icon).attr('width', iconSize).attr('height', iconSize).attr('x', -iconSize/2).attr('y', -iconSize/2).attr('preserveAspectRatio','xMidYMid slice');
+      if(d.id === 'Me') img.attr('clip-path', 'url(#clip-avatar)');
     } else {
       g.append('circle').attr('r', Math.max(d.size || 8, 8)).attr('fill', '#fff');
     }
