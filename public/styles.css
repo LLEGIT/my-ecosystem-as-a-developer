@@ -10,3 +10,28 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .dot{width:12px;height:12px;border-radius:50%}
 .credits{margin-top:14px;color:var(--muted);font-size:0.85rem}
 .tooltip{position:fixed;padding:8px 10px;background:#0f172a;color:#fff;border-radius:6px;font-size:0.85rem;pointer-events:none;z-index:10;box-shadow:0 6px 18px rgba(2,6,23,0.4);}
+
+/* Mobile / responsive tweaks */
+@media (max-width: 900px){
+	.wrap{margin:20px 12px;padding:18px}
+	header{flex-direction:column;align-items:flex-start;gap:8px}
+	.title{font-size:1.25rem}
+	.subtitle{font-size:0.88rem}
+	#network{height:560px}
+	.legend{gap:6px}
+	.legend-item{font-size:0.85rem;padding:6px 8px}
+	.credits{font-size:0.82rem}
+}
+
+@media (max-width: 520px){
+	.wrap{padding:14px;border-radius:10px}
+	.title{font-size:1.05rem}
+	.subtitle{font-size:0.82rem}
+	#network{height:480px}
+	.legend{display:flex;overflow:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+	.legend-item{white-space:nowrap;padding:6px 8px;font-size:0.82rem}
+	.dot{width:10px;height:10px}
+	.tooltip{font-size:0.9rem;padding:10px 12px}
+	/* reduce SVG text size on small screens so labels don't wrap awkwardly */
+	svg text{font-size:10px}
+}
