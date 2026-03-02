@@ -35,3 +35,10 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px}
 	/* reduce SVG text size on small screens so labels don't wrap awkwardly */
 	svg text{font-size:10px}
 }
+
+/* Highlight / muted states used by legend hover interactions */
+.legend-item{transition:background .12s ease}
+.legend-item:hover{background:#f1f5f9;cursor:pointer}
+.muted{opacity:0.12 !important}
+.link.muted{stroke-opacity:0.06 !important}
+.node:not(.muted) circle{transition:stroke-width .12s, r .12s}

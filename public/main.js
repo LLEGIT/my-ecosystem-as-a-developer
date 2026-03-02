@@ -74,9 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const linkGroup = container.append('g').attr('stroke','#cbd5e1').attr('stroke-opacity',0.8);
   const nodeGroup = container.append('g');
 
-  const link = linkGroup.selectAll('line').data(links).enter().append('line').attr('stroke-width',1.2);
+  const link = linkGroup.selectAll('line').data(links).enter().append('line').attr('class','link').attr('stroke-width',1.2);
 
-  const node = nodeGroup.selectAll('g').data(nodes).enter().append('g')
+  const node = nodeGroup.selectAll('g').data(nodes).enter().append('g').attr('class','node')
     .on('mouseenter', (event,d)=>showTooltip(event,d))
     .on('mousemove', (event,d)=>moveTooltip(event))
     .on('mouseleave', hideTooltip)
@@ -129,6 +129,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const item = legend.append('div').attr('class','legend-item');
     item.append('div').attr('class','dot').style('background', colorByGroup[g] || '#94a3b8');
     item.append('div').text(g);
+
+    // highlight children/tools on legend hover (dim unrelated nodes/links)
+    item.on('mouseenter', ()=>{
+      node.classed('muted', d=> d.group !== g && d.id !== 'Me');
+      link.classed('muted', l=>{
+        const sGroup = (typeof l.source === 'object') ? l.source.group : (nodes.find(n=>n.id===l.source)||{}).group;
+        const tGroup = (typeof l.target === 'object') ? l.target.group : (nodes.find(n=>n.id===l.target)||{}).group;
+        return sGroup !== g && tGroup !== g;
+      });
+    });
+
+    item.on('mouseleave', ()=>{
+      node.classed('muted', false);
+      link.classed('muted', false);
+    });
   });
 
   window.addEventListener('resize', ()=>{
